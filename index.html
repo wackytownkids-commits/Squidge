@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>squidge — handmade squishies, made slowly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F6F1E8;
+    --cream-soft: #EFE8DA;
+    --cream-deep: #E5DCC8;
+    --espresso: #2B2520;
+    --espresso-soft: #5C544A;
+    /* Real product colors */
+    --aqua: #6FCBD6;
+    --aqua-deep: #3A9FAD;
+    --ocean: #3D8FCA;
+    --ocean-deep: #1F5F8E;
+    --sunshine: #F0D040;
+    --sunshine-deep: #C9A720;
+    --meadow: #5BB04C;
+    --meadow-deep: #2E7A28;
+    /* Accent for branding */
+    --rose: #D49B89;
+    --hairline: rgba(43, 37, 32, 0.12);
+    --hairline-strong: rgba(43, 37, 32, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--espresso);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    background-image: radial-gradient(rgba(43,37,32,0.025) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: 0.6;
+  }
+  .serif { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+  .italic { font-style: italic; }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(246, 241, 232, 0.78);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .logo-mark {
+    width: 26px;
+    height: 26px;
+    background: var(--aqua);
+    border-radius: 60% 50% 70% 40% / 50% 60% 50% 60%;
+    margin-right: 8px;
+    position: relative;
+    transform: rotate(-8deg);
+    animation: wobbleLogo 8s ease-in-out infinite;
+  }
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50%;
+    top: 4px;
+    left: 5px;
+    filter: blur(0.5px);
+  }
+  @keyframes wobbleLogo {
+    0%, 100% { border-radius: 60% 50% 70% 40% / 50% 60% 50% 60%; }
+    50% { border-radius: 50% 60% 40% 70% / 60% 50% 70% 40%; }
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    color: var(--espresso-soft);
+  }
+  .nav-links a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a:hover { color: var(--espresso); }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--aqua-deep);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    background: var(--espresso);
+    color: var(--cream);
+    padding: 10px 16px 10px 22px;
+    border-radius: 999px;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.15s, background 0.2s;
+  }
+  .nav-cta:hover { background: #1a1612; }
+  .nav-cta:active { transform: scale(0.97); }
+  .nav-cta .arrow {
+    width: 18px;
+    height: 18px;
+    background: var(--cream);
+    color: var(--espresso);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 60px 32px 100px;
+    min-height: 88dvh;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 60px;
+    align-items: end;
+    min-height: 78dvh;
+    position: relative;
+    z-index: 2;
+  }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(80px, 14vw, 220px);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    font-weight: 400;
+  }
+  .hero h1 .aqua-italic { font-style: italic; color: var(--aqua-deep); }
+  .hero-tag {
+    align-self: end;
+    padding-bottom: 20px;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--espresso-soft);
+    margin-bottom: 18px;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--espresso-soft);
+  }
+  .eyebrow .pulse {
+    width: 6px;
+    height: 6px;
+    background: var(--meadow);
+    border-radius: 50%;
+    margin-left: 4px;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+  .hero-tag p {
+    font-size: 18px;
+    color: var(--espresso-soft);
+    max-width: 32ch;
+    line-height: 1.5;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 28px;
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--espresso-soft);
+  }
+  .hero-meta div strong {
+    display: block;
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    color: var(--espresso);
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .hero-cta {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--espresso);
+    color: var(--cream);
+    padding: 14px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+    font-family: inherit;
+  }
+  .btn-primary:hover { background: #1a1612; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary .arrow {
+    width: 20px;
+    height: 20px;
+    background: var(--cream);
+    color: var(--espresso);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--espresso);
+    padding: 14px 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--hairline-strong);
+    transition: background 0.2s;
+  }
+  .btn-ghost:hover { background: var(--cream-soft); }
+
+  /* Floating squishies background — using real product images */
+  .float-squishy {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center 60%;
+    box-shadow: 0 12px 30px rgba(43,37,32,0.15);
+  }
+  .float-squishy::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: inset 0 -8px 20px rgba(0,0,0,0.1);
+  }
+  .fs-1 {
+    top: 15%;
+    right: 8%;
+    width: 110px;
+    height: 110px;
+    background-image: url('squidge-images/water-aqua.jpg'), radial-gradient(circle at 35% 30%, var(--aqua), var(--aqua-deep));
+    animation: floatA 9s ease-in-out infinite;
+  }
+  .fs-2 {
+    top: 56%;
+    right: 24%;
+    width: 70px;
+    height: 70px;
+    background-image: url('squidge-images/slime-yellow.jpg'), radial-gradient(circle at 35% 30%, var(--sunshine), var(--sunshine-deep));
+    animation: floatB 11s ease-in-out infinite;
+  }
+  .fs-3 {
+    bottom: 16%;
+    right: 5%;
+    width: 90px;
+    height: 90px;
+    background-image: url('squidge-images/slime-green.jpg'), radial-gradient(circle at 35% 30%, var(--meadow), var(--meadow-deep));
+    animation: floatA 13s ease-in-out infinite;
+  }
+  @keyframes floatA {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+  @keyframes floatB {
+    0%, 100% { transform: translateY(0) rotate(8deg); }
+    50% { transform: translateY(-14px) rotate(-6deg); }
+  }
+
+  /* MARQUEE */
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    padding: 22px 0;
+    background: var(--cream-soft);
+    position: relative;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 50px;
+    white-space: nowrap;
+    animation: scroll 36s linear infinite;
+    font-family: 'Instrument Serif', serif;
+    font-size: 24px;
+    color: var(--espresso);
+  }
+  .marquee-track .dot-sep {
+    color: var(--aqua-deep);
+    display: inline-flex;
+    align-items: center;
+  }
+  .marquee-track .dot-sep::before {
+    content: '✿';
+    font-style: normal;
+    font-size: 14px;
+  }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION BASE */
+  section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 120px 32px;
+    position: relative;
+  }
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    margin-bottom: 60px;
+    align-items: end;
+  }
+  .section-head h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(44px, 5.5vw, 72px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+  .section-head h2 .italic { color: var(--aqua-deep); font-style: italic; }
+  .section-head h2 .accent { color: var(--meadow-deep); font-style: italic; }
+  .section-head .lead {
+    color: var(--espresso-soft);
+    font-size: 17px;
+    max-width: 44ch;
+  }
+
+  /* DROP CALENDAR */
+  .drops {
+    background: var(--cream-soft);
+    border-radius: 32px;
+    padding: 70px 60px;
+    margin: 0 auto;
+    max-width: 1280px;
+  }
+  .drop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 50px;
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .drop-header h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .drop-header h3 .italic { color: var(--aqua-deep); font-style: italic; }
+  .drop-header .legend {
+    display: flex;
+    gap: 18px;
+    font-size: 12px;
+    color: var(--espresso-soft);
+    flex-wrap: wrap;
+  }
+  .drop-header .legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .drop-header .legend i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .drop-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+  }
+  .drop-day {
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: 16px 14px;
+    aspect-ratio: 1/1.1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .drop-day:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(43,37,32,0.06); }
+  .drop-day .day-name {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--espresso-soft);
+  }
+  .drop-day .date {
+    font-family: 'Instrument Serif', serif;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--espresso);
+  }
+  .drop-day .event {
+    font-size: 11px;
+    color: var(--espresso-soft);
+    line-height: 1.3;
+  }
+  .drop-day .event strong {
+    display: block;
+    color: var(--espresso);
+    font-weight: 500;
+    margin-bottom: 2px;
+    font-size: 12px;
+  }
+  .drop-day.has-event {
+    background: var(--espresso);
+    color: var(--cream);
+    border-color: transparent;
+  }
+  .drop-day.has-event .day-name { color: rgba(246,241,232,0.6); }
+  .drop-day.has-event .date { color: var(--cream); }
+  .drop-day.has-event .event { color: rgba(246,241,232,0.7); }
+  .drop-day.has-event .event strong { color: var(--aqua); }
+  .drop-day.featured {
+    background: var(--meadow);
+    color: white;
+    border-color: transparent;
+  }
+  .drop-day.featured .day-name { color: rgba(255,255,255,0.75); }
+  .drop-day.featured .date { color: white; }
+  .drop-day.featured .event { color: rgba(255,255,255,0.85); }
+  .drop-day.featured .event strong { color: white; }
+  .drop-day .badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--sunshine);
+    border-radius: 50%;
+  }
+
+  /* PRODUCTS */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+  }
+  .product {
+    border-radius: 28px;
+    padding: 6px;
+    background: var(--cream-soft);
+    border: 1px solid var(--hairline);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .product:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 40px -20px rgba(43,37,32,0.1);
+  }
+  .product-inner {
+    background: var(--cream);
+    border-radius: 22px;
+    padding: 32px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  .product.slime { grid-column: span 7; }
+  .product.water { grid-column: span 5; }
+  .product.bundle { grid-column: span 5; }
+  .product.mystery { grid-column: span 7; }
+
+  .product-visual {
+    height: 320px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center 65%;
+  }
+  /* Fallback gradients in case image is missing */
+  .product.slime .product-visual {
+    background-color: var(--sunshine);
+    background-image: url('squidge-images/slime-yellow.jpg'), linear-gradient(135deg, var(--sunshine) 0%, var(--sunshine-deep) 100%);
+  }
+  .product.water .product-visual {
+    background-color: var(--aqua);
+    background-image: url('squidge-images/water-aqua.jpg'), linear-gradient(135deg, var(--aqua) 0%, var(--aqua-deep) 100%);
+  }
+  .product.bundle .product-visual {
+    background-color: var(--ocean);
+    background-image: url('squidge-images/water-blue.jpg'), linear-gradient(135deg, var(--ocean) 0%, var(--ocean-deep) 100%);
+  }
+  .product.mystery .product-visual {
+    background-color: var(--espresso);
+    background-image: radial-gradient(circle at 35% 25%, #4A3F33 0%, #2B2520 60%, #1a1410 100%);
+  }
+  .product-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.18));
+    pointer-events: none;
+  }
+  .product.mystery .product-visual::after {
+    content: '?';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 200px;
+    color: var(--cream);
+    opacity: 0.92;
+    background: none;
+  }
+  .product-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(43,37,32,0.85);
+    backdrop-filter: blur(8px);
+    color: var(--cream);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    z-index: 2;
+  }
+  .product-tag {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--espresso-soft);
+    margin-bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .product-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--aqua);
+    border-radius: 50%;
+  }
+  .product.slime .product-tag::before { background: var(--sunshine); }
+  .product.bundle .product-tag::before { background: var(--ocean); }
+  .product.mystery .product-tag::before { background: var(--meadow); }
+  .product h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+  .product p {
+    color: var(--espresso-soft);
+    font-size: 15px;
+    margin-bottom: 24px;
+    max-width: 38ch;
+  }
+  .product-bottom {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid var(--hairline);
+  }
+  .price {
+    font-family: 'Instrument Serif', serif;
+    font-size: 34px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .price small {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--espresso-soft);
+    margin-left: 4px;
+  }
+  .order-btn {
+    background: var(--espresso);
+    color: var(--cream);
+    border: none;
+    padding: 11px 16px 11px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.15s, background 0.2s;
+    text-decoration: none;
+  }
+  .order-btn:hover { background: #1a1612; }
+  .order-btn:active { transform: scale(0.97); }
+  .order-btn .arrow {
+    width: 18px;
+    height: 18px;
+    background: var(--cream);
+    color: var(--espresso);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+
+  /* COLOR PALETTE - NOW REAL COLORS */
+  .palette-section {
+    background: var(--espresso);
+    color: var(--cream);
+    padding: 120px 32px;
+    margin: 60px 0;
+  }
+  .palette-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .palette-section .section-head h2 { color: var(--cream); }
+  .palette-section .section-head h2 .italic { color: var(--aqua); }
+  .palette-section .section-head .lead { color: rgba(246,241,232,0.65); }
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .swatch {
+    border-radius: 24px;
+    aspect-ratio: 4/5;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+    background-size: cover;
+    background-position: center 65%;
+    color: white;
+  }
+  .swatch::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 30%, transparent 60%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+  }
+  .swatch:hover { transform: translateY(-6px) rotate(-1deg); }
+  .swatch:nth-child(2):hover { transform: translateY(-6px) rotate(1deg); }
+  .swatch:nth-child(3):hover { transform: translateY(-6px) rotate(-1deg); }
+  .swatch:nth-child(4):hover { transform: translateY(-6px) rotate(1deg); }
+  .swatch.aqua {
+    background-color: var(--aqua);
+    background-image: url('squidge-images/water-aqua.jpg'), linear-gradient(160deg, var(--aqua) 0%, var(--aqua-deep) 100%);
+  }
+  .swatch.ocean {
+    background-color: var(--ocean);
+    background-image: url('squidge-images/water-blue.jpg'), linear-gradient(160deg, var(--ocean) 0%, var(--ocean-deep) 100%);
+  }
+  .swatch.sunshine {
+    background-color: var(--sunshine);
+    background-image: url('squidge-images/slime-yellow.jpg'), linear-gradient(160deg, var(--sunshine) 0%, var(--sunshine-deep) 100%);
+  }
+  .swatch.meadow {
+    background-color: var(--meadow);
+    background-image: url('squidge-images/slime-green.jpg'), linear-gradient(160deg, var(--meadow) 0%, var(--meadow-deep) 100%);
+  }
+  .swatch > * { position: relative; z-index: 1; }
+  .swatch .swatch-num {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    opacity: 0.85;
+  }
+  .swatch h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 44px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+  .swatch .swatch-meta {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    opacity: 0.9;
+  }
+  .swatch .swatch-meta span {
+    display: block;
+    margin-top: 4px;
+    font-size: 10px;
+    opacity: 0.7;
+  }
+  .swatch .swatch-type {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    z-index: 2;
+  }
+
+  /* ORDER BUILDER — THE TICKET FORM */
+  .order-builder-section {
+    background:
+      linear-gradient(180deg, var(--cream) 0%, var(--cream-soft) 100%);
+    padding: 120px 32px;
+  }
+  .builder-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .builder-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 60px;
+    align-items: start;
+    margin-top: 50px;
+  }
+  .builder-form {
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 28px;
+    padding: 6px;
+  }
+  .builder-form-inner {
+    background: white;
+    border-radius: 22px;
+    padding: 40px;
+  }
+  .form-group {
+    margin-bottom: 36px;
+  }
+  .form-group:last-child { margin-bottom: 0; }
+  .form-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .form-label .step-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--cream-soft);
+    border: 1px solid var(--hairline);
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--espresso-soft);
+    font-weight: 400;
+  }
+  .form-label .step-tag.done {
+    background: var(--meadow);
+    border-color: var(--meadow);
+    color: white;
+  }
+  /* Type pills */
+  .type-pills {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .pill {
+    background: var(--cream);
+    border: 1.5px solid var(--hairline);
+    color: var(--espresso);
+    border-radius: 16px;
+    padding: 20px 24px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .pill:hover { border-color: var(--hairline-strong); background: var(--cream-soft); }
+  .pill.active {
+    border-color: var(--espresso);
+    background: var(--espresso);
+    color: var(--cream);
+  }
+  .pill .pill-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--aqua);
+    background-size: cover;
+    background-position: center 65%;
+    flex-shrink: 0;
+  }
+  .pill[data-type="water"] .pill-icon {
+    background-image: url('squidge-images/water-aqua.jpg'), radial-gradient(circle at 35% 30%, var(--aqua), var(--aqua-deep));
+  }
+  .pill[data-type="slime"] .pill-icon {
+    background-image: url('squidge-images/slime-yellow.jpg'), radial-gradient(circle at 35% 30%, var(--sunshine), var(--sunshine-deep));
+  }
+  .pill strong {
+    display: block;
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.1;
+  }
+  .pill span {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+  /* Color swatches in form */
+  .color-picker {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .color-option {
+    background: var(--cream);
+    border: 1.5px solid var(--hairline);
+    border-radius: 14px;
+    padding: 10px 8px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    text-align: center;
+    color: var(--espresso);
+  }
+  .color-option:hover { border-color: var(--hairline-strong); }
+  .color-option.active {
+    border-color: var(--espresso);
+    background: var(--cream-soft);
+  }
+  .color-option .color-swatch-img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background-size: cover;
+    background-position: center 65%;
+    position: relative;
+    overflow: hidden;
+  }
+  .color-option[data-color="aqua"] .color-swatch-img {
+    background-color: var(--aqua);
+    background-image: url('squidge-images/water-aqua.jpg'), linear-gradient(135deg, var(--aqua), var(--aqua-deep));
+  }
+  .color-option[data-color="ocean"] .color-swatch-img {
+    background-color: var(--ocean);
+    background-image: url('squidge-images/water-blue.jpg'), linear-gradient(135deg, var(--ocean), var(--ocean-deep));
+  }
+  .color-option[data-color="sunshine"] .color-swatch-img {
+    background-color: var(--sunshine);
+    background-image: url('squidge-images/slime-yellow.jpg'), linear-gradient(135deg, var(--sunshine), var(--sunshine-deep));
+  }
+  .color-option[data-color="meadow"] .color-swatch-img {
+    background-color: var(--meadow);
+    background-image: url('squidge-images/slime-green.jpg'), linear-gradient(135deg, var(--meadow), var(--meadow-deep));
+  }
+  .color-option[data-color="custom"] .color-swatch-img {
+    background:
+      conic-gradient(from 0deg, var(--aqua), var(--sunshine), var(--meadow), var(--ocean), var(--rose), var(--aqua));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .color-option[data-color="custom"] .color-swatch-img::after {
+    content: '?';
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 36px;
+    color: white;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .color-option strong {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .color-option small {
+    font-size: 9px;
+    color: var(--espresso-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  /* Quantity */
+  .qty-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .qty-option {
+    background: var(--cream);
+    border: 1.5px solid var(--hairline);
+    color: var(--espresso);
+    border-radius: 16px;
+    padding: 18px 20px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .qty-option:hover { border-color: var(--hairline-strong); background: var(--cream-soft); }
+  .qty-option.active {
+    border-color: var(--espresso);
+    background: var(--espresso);
+    color: var(--cream);
+  }
+  .qty-option strong {
+    display: block;
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+  .qty-option .qty-price {
+    font-family: 'Instrument Serif', serif;
+    font-size: 24px;
+    font-weight: 400;
+  }
+  .qty-option small {
+    font-size: 11px;
+    opacity: 0.7;
+  }
+  /* Inputs */
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    background: var(--cream);
+    border: 1.5px solid var(--hairline);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--espresso);
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--espresso);
+    background: white;
+  }
+  .form-textarea { resize: vertical; min-height: 80px; }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--espresso-soft); }
+  .contact-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .contact-fields .form-input.full { grid-column: 1 / -1; }
+  .form-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%235C544A' d='M6 8L0 0h12z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    padding-right: 44px;
+  }
+
+  /* Order summary card */
+  .order-summary {
+    position: sticky;
+    top: 100px;
+  }
+  .summary-card {
+    background: var(--espresso);
+    color: var(--cream);
+    border-radius: 24px;
+    padding: 36px 32px;
+    background-image:
+      radial-gradient(circle at 100% 0%, rgba(111,203,214,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 0% 100%, rgba(91,176,76,0.1) 0%, transparent 40%);
+  }
+  .summary-card .eyebrow { color: rgba(246,241,232,0.55); }
+  .summary-card .eyebrow::before { background: rgba(246,241,232,0.55); }
+  .summary-card h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 4px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .summary-card .ticket-num {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(246,241,232,0.5);
+    margin-bottom: 28px;
+    border-bottom: 1px dashed rgba(246,241,232,0.15);
+    padding-bottom: 16px;
+  }
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(246,241,232,0.08);
+    font-size: 13px;
+    gap: 16px;
+  }
+  .summary-line span {
+    color: rgba(246,241,232,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 11px;
+  }
+  .summary-line strong {
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--cream);
+    text-align: right;
+    flex-shrink: 0;
+    max-width: 60%;
+    overflow-wrap: break-word;
+  }
+  .summary-total {
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 2px solid rgba(246,241,232,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+  .summary-total span {
+    color: rgba(246,241,232,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 11px;
+  }
+  .summary-total strong {
+    font-family: 'Instrument Serif', serif;
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--cream);
+  }
+  .submit-btn {
+    width: 100%;
+    background: var(--cream);
+    color: var(--espresso);
+    border: none;
+    padding: 18px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.15s, background 0.2s;
+  }
+  .submit-btn:hover { background: white; }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .submit-btn .arrow {
+    width: 22px;
+    height: 22px;
+    background: var(--espresso);
+    color: var(--cream);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+  }
+  .summary-note {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 11px;
+    color: rgba(246,241,232,0.55);
+  }
+
+  /* Modal */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal.open { display: flex; }
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(43,37,32,0.7);
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease;
+  }
+  .modal-card {
+    position: relative;
+    background: var(--cream);
+    border-radius: 28px;
+    padding: 6px;
+    max-width: 540px;
+    width: 100%;
+    z-index: 1;
+    animation: slideUp 0.4s cubic-bezier(.2, .9, .3, 1);
+    max-height: 90vh;
+    overflow: auto;
+  }
+  .modal-card-inner {
+    background: white;
+    border-radius: 22px;
+    padding: 40px;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-card h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 40px;
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .modal-card h3 .italic { color: var(--meadow); font-style: italic; }
+  .modal-card p.intro {
+    color: var(--espresso-soft);
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+  .order-recap {
+    background: var(--cream-soft);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 20px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--espresso);
+    white-space: pre-wrap;
+    margin-bottom: 20px;
+    max-height: 200px;
+    overflow: auto;
+  }
+  .modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .modal-actions .btn {
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: transform 0.15s, background 0.2s;
+  }
+  .modal-actions .btn-copy {
+    background: var(--cream-soft);
+    color: var(--espresso);
+    border: 1.5px solid var(--hairline-strong);
+  }
+  .modal-actions .btn-copy:hover { background: var(--cream-deep); }
+  .modal-actions .btn-copy.copied { background: var(--meadow); color: white; border-color: var(--meadow); }
+  .modal-actions .btn-send {
+    background: var(--espresso);
+    color: var(--cream);
+  }
+  .modal-actions .btn-send:hover { background: #1a1612; }
+  .modal-actions .btn:active { transform: scale(0.98); }
+  .modal-close {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    color: var(--espresso-soft);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    padding: 8px;
+  }
+  .modal-close:hover { color: var(--espresso); }
+  .modal-card .next-steps {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--espresso-soft);
+  }
+  .modal-card .next-steps strong {
+    display: block;
+    color: var(--espresso);
+    font-family: 'Instrument Serif', serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+
+  /* INSTAGRAM GALLERY */
+  .ig-gallery {
+    padding: 120px 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .ig-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-top: 50px;
+  }
+  .ig-tile {
+    aspect-ratio: 1/1;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s, filter 0.3s;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center 65%;
+  }
+  .ig-tile:hover {
+    transform: scale(1.03);
+    filter: brightness(0.9);
+  }
+  .ig-tile.t-1 {
+    background-color: var(--aqua);
+    background-image: url('squidge-images/water-aqua.jpg'), linear-gradient(135deg, var(--aqua), var(--aqua-deep));
+  }
+  .ig-tile.t-2 {
+    background-color: var(--sunshine);
+    background-image: url('squidge-images/slime-yellow.jpg'), linear-gradient(135deg, var(--sunshine), var(--sunshine-deep));
+  }
+  .ig-tile.t-3 {
+    background-color: var(--meadow);
+    background-image: url('squidge-images/slime-green.jpg'), linear-gradient(135deg, var(--meadow), var(--meadow-deep));
+  }
+  .ig-tile.t-4 {
+    background: var(--espresso);
+  }
+  .ig-tile.t-5 {
+    background-color: var(--ocean);
+    background-image: url('squidge-images/water-blue.jpg'), linear-gradient(135deg, var(--ocean), var(--ocean-deep));
+  }
+  .ig-tile.t-6 {
+    background-color: var(--aqua);
+    background-image: url('squidge-images/water-aqua.jpg'), linear-gradient(135deg, var(--aqua), var(--aqua-deep));
+    background-position: center 50%;
+  }
+  .ig-tile.t-4::after {
+    content: '?';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 100px;
+    color: var(--cream);
+    opacity: 0.9;
+  }
+  .ig-tile .ig-overlay {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    color: white;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px);
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+  .ig-tile:hover .ig-overlay { opacity: 1; }
+  .ig-handle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .ig-handle-row .handle {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    line-height: 1;
+  }
+  .ig-handle-row .handle .italic { color: var(--aqua-deep); font-style: italic; }
+  .ig-handle-row .stats {
+    display: flex;
+    gap: 28px;
+    font-size: 13px;
+    color: var(--espresso-soft);
+  }
+  .ig-handle-row .stats strong {
+    display: block;
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    color: var(--espresso);
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  /* HOW IT'S MADE TIMELINE */
+  .made-section { padding: 120px 32px; max-width: 1280px; margin: 0 auto; }
+  .timeline {
+    position: relative;
+    margin-top: 60px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--hairline);
+  }
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    position: relative;
+  }
+  .step {
+    position: relative;
+    padding-top: 60px;
+  }
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 1.5px solid var(--espresso);
+  }
+  .step.active::before { background: var(--meadow); border-color: var(--meadow); }
+  .step .step-num {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--aqua-deep);
+    margin-bottom: 8px;
+  }
+  .step h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 30px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    line-height: 1.05;
+  }
+  .step p {
+    color: var(--espresso-soft);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    padding: 120px 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .quote-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .quote {
+    background: var(--cream-soft);
+    border: 1px solid var(--hairline);
+    border-radius: 24px;
+    padding: 36px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    transition: transform 0.3s, background 0.3s;
+  }
+  .quote:hover { transform: translateY(-4px); background: var(--cream-deep); }
+  .quote .mark {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 80px;
+    line-height: 0.5;
+    color: var(--aqua-deep);
+    height: 32px;
+  }
+  .quote:nth-child(2) .mark { color: var(--sunshine-deep); }
+  .quote:nth-child(3) .mark { color: var(--meadow-deep); }
+  .quote-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--espresso);
+  }
+  .quote-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: auto;
+  }
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--aqua);
+  }
+  .quote:nth-child(2) .avatar { background: var(--sunshine); }
+  .quote:nth-child(3) .avatar { background: var(--meadow); }
+  .quote-author small {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--espresso-soft);
+    margin-top: 2px;
+  }
+  .quote-author .name {
+    font-size: 14px;
+    color: var(--espresso);
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-text p {
+    font-size: 18px;
+    color: var(--espresso-soft);
+    margin-bottom: 20px;
+    max-width: 42ch;
+  }
+  .about-text p:first-of-type {
+    font-family: 'Instrument Serif', serif;
+    font-size: 34px;
+    line-height: 1.15;
+    color: var(--espresso);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .about-text p:first-of-type .italic { color: var(--aqua-deep); }
+  .about-card {
+    background: var(--espresso);
+    color: var(--cream);
+    padding: 6px;
+    border-radius: 28px;
+    transform: rotate(-1deg);
+    transition: transform 0.4s;
+  }
+  .about-card:hover { transform: rotate(0); }
+  .about-card-inner {
+    background: #34291e;
+    border-radius: 22px;
+    padding: 40px;
+    aspect-ratio: 4/5;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-image:
+      radial-gradient(circle at 25% 20%, rgba(111,203,214,0.2) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(91,176,76,0.12) 0%, transparent 50%);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-card-inner .eyebrow { color: rgba(246,241,232,0.55); }
+  .about-card-inner .eyebrow::before { background: rgba(246,241,232,0.55); }
+  .about-card-inner .big {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(40px, 5vw, 60px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+  .about-card-inner .big .italic { color: var(--aqua); }
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(246,241,232,0.15);
+  }
+  .stats div small {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(246,241,232,0.55);
+    margin-top: 4px;
+  }
+  .stats div strong {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  /* FAQ */
+  .faq-list {
+    border-top: 1px solid var(--hairline);
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--hairline);
+    padding: 28px 0;
+    display: grid;
+    grid-template-columns: 80px 1fr 1.5fr 40px;
+    gap: 24px;
+    align-items: start;
+    cursor: pointer;
+    transition: padding 0.2s;
+  }
+  .faq-item:hover { padding-left: 12px; }
+  .faq-item .q-num {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    color: var(--aqua-deep);
+    font-size: 14px;
+  }
+  .faq-item .q {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+  .faq-item .a {
+    color: var(--espresso-soft);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .faq-item .toggle {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--hairline-strong);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--espresso-soft);
+    transition: background 0.2s;
+  }
+  .faq-item:hover .toggle { background: var(--cream-soft); }
+
+  /* NEWSLETTER */
+  .newsletter {
+    background: var(--cream-soft);
+    border-radius: 32px;
+    padding: 70px 60px;
+    max-width: 1280px;
+    margin: 60px auto 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .newsletter h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(40px, 4.5vw, 60px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin-bottom: 18px;
+  }
+  .newsletter h3 .italic { color: var(--aqua-deep); font-style: italic; }
+  .newsletter p { color: var(--espresso-soft); font-size: 16px; max-width: 36ch; }
+  .newsletter-form {
+    display: flex;
+    gap: 8px;
+    background: var(--cream);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 6px 6px 6px 24px;
+    align-items: center;
+  }
+  .newsletter-form input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 12px 0;
+    color: var(--espresso);
+  }
+  .newsletter-form input::placeholder { color: var(--espresso-soft); }
+  .newsletter-form button {
+    background: var(--espresso);
+    color: var(--cream);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .newsletter-form button:hover { background: #1a1612; }
+  .newsletter-form button:active { transform: scale(0.97); }
+  .newsletter-meta {
+    font-size: 12px;
+    color: var(--espresso-soft);
+    margin-top: 14px;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--hairline);
+    padding: 60px 32px 40px;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  .footer-big {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(60px, 10vw, 140px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    font-weight: 400;
+  }
+  .footer-big .italic { color: var(--aqua-deep); font-style: italic; }
+  .footer-big .dot {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: var(--meadow);
+    border-radius: 50%;
+    transform: translateY(-12px);
+  }
+  .footer-col h5 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--espresso-soft);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .footer-col a {
+    display: block;
+    color: var(--espresso);
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 15px;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--aqua-deep); }
+  .footer-bottom {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-top: 30px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--espresso-soft);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* Scroll-to-top */
+  .scroll-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 48px;
+    height: 48px;
+    background: var(--espresso);
+    color: var(--cream);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    z-index: 60;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s, background 0.2s;
+    box-shadow: 0 6px 20px rgba(43,37,32,0.2);
+  }
+  .scroll-top.visible { opacity: 1; transform: translateY(0); }
+  .scroll-top:hover { background: #1a1612; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .builder-grid { grid-template-columns: 1fr; gap: 40px; }
+    .order-summary { position: static; }
+    .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+    .timeline::before { display: none; }
+    .step::before { display: none; }
+    .step { padding-top: 0; }
+    .palette-grid { grid-template-columns: repeat(2, 1fr); }
+    .quote-grid { grid-template-columns: 1fr; }
+    .ig-grid { grid-template-columns: repeat(3, 1fr); }
+    .footer-inner { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .hero { padding: 40px 24px 60px; }
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .hero-tag { padding-bottom: 0; }
+    .float-squishy { display: none; }
+    section { padding: 80px 24px; }
+    .section-head { grid-template-columns: 1fr; gap: 24px; }
+    .product-grid { grid-template-columns: 1fr; }
+    .product.slime, .product.water, .product.bundle, .product.mystery {
+      grid-column: span 1;
+    }
+    .drops, .newsletter { padding: 50px 28px; margin: 40px 16px; }
+    .palette-section, .order-builder-section { padding: 80px 24px; }
+    .builder-form-inner { padding: 28px 20px; }
+    .color-picker { grid-template-columns: repeat(3, 1fr); }
+    .qty-options, .type-pills { grid-template-columns: 1fr; }
+    .contact-fields { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-card { transform: none; }
+    .newsletter { grid-template-columns: 1fr; gap: 24px; }
+    .newsletter-form { flex-wrap: wrap; padding: 8px; border-radius: 16px; }
+    .newsletter-form input { width: 100%; padding: 10px 14px; }
+    .newsletter-form button { width: 100%; padding: 14px; justify-content: center; border-radius: 12px; }
+    .faq-item { grid-template-columns: 1fr 30px; gap: 12px; }
+    .faq-item .q-num, .faq-item .a { display: none; }
+    .faq-item.open .a { display: block; grid-column: 1 / -1; }
+    .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+    .nav-links { display: none; }
+    .drop-grid { grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .drop-day { padding: 8px 6px; aspect-ratio: 1/1.4; }
+    .drop-day .day-name { font-size: 8px; }
+    .drop-day .date { font-size: 18px; }
+    .drop-day .event { font-size: 9px; }
+    .drop-day .event strong { font-size: 10px; }
+    .ig-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+    .modal-actions { grid-template-columns: 1fr; }
+    .modal-card-inner { padding: 28px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-mark"></span>
+      squidge
+    </div>
+    <div class="nav-links">
+      <a href="#shop">shop</a>
+      <a href="#colors">colors</a>
+      <a href="#ticket">make a ticket</a>
+      <a href="#about">about</a>
+      <a href="#faq">faq</a>
+    </div>
+    <a href="#ticket" class="nav-cta">order now <span class="arrow">→</span></a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="float-squishy fs-1"></div>
+  <div class="float-squishy fs-2"></div>
+  <div class="float-squishy fs-3"></div>
+
+  <div class="hero-grid">
+    <h1>squishies,<br>made <span class="aqua-italic">slowly</span>.</h1>
+    <div class="hero-tag">
+      <span class="eyebrow">small batch · open for orders <span class="pulse"></span></span>
+      <p>Soft little things you can hold. Slime ones and water ones, made one at a time in my room.</p>
+      <div class="hero-meta">
+        <div><strong>$5</strong>each</div>
+        <div><strong>3 for $12</strong>bundle</div>
+        <div><strong>48h</strong>turnaround</div>
+      </div>
+      <div class="hero-cta">
+        <a href="#ticket" class="btn-primary">make a ticket <span class="arrow">→</span></a>
+        <a href="#shop" class="btn-ghost">see the shop</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>handmade in small batches</span>
+    <span class="dot-sep"></span>
+    <span>aqua glitter water</span>
+    <span class="dot-sep"></span>
+    <span>ocean blue water</span>
+    <span class="dot-sep"></span>
+    <span>sunshine yellow slime</span>
+    <span class="dot-sep"></span>
+    <span>meadow stars slime</span>
+    <span class="dot-sep"></span>
+    <span>custom colors welcome</span>
+    <span class="dot-sep"></span>
+    <span>handmade in small batches</span>
+    <span class="dot-sep"></span>
+    <span>aqua glitter water</span>
+    <span class="dot-sep"></span>
+    <span>ocean blue water</span>
+    <span class="dot-sep"></span>
+    <span>sunshine yellow slime</span>
+    <span class="dot-sep"></span>
+    <span>meadow stars slime</span>
+    <span class="dot-sep"></span>
+    <span>custom colors welcome</span>
+    <span class="dot-sep"></span>
+  </div>
+</div>
+
+<!-- DROP CALENDAR -->
+<section style="padding-top: 100px;">
+  <div class="drops">
+    <div class="drop-header">
+      <h3>this week's <span class="italic">drops</span></h3>
+      <div class="legend">
+        <span><i style="background: var(--sunshine);"></i>new color</span>
+        <span><i style="background: var(--meadow);"></i>mystery drop</span>
+        <span><i style="background: var(--cream-deep); border:1px solid var(--hairline-strong);"></i>made to order</span>
+      </div>
+    </div>
+    <div class="drop-grid">
+      <div class="drop-day">
+        <div><div class="day-name">mon</div><div class="date">12</div></div>
+        <div class="event">restock day</div>
+      </div>
+      <div class="drop-day">
+        <div><div class="day-name">tue</div><div class="date">13</div></div>
+        <div class="event">made to order</div>
+      </div>
+      <div class="drop-day has-event">
+        <span class="badge"></span>
+        <div><div class="day-name">wed</div><div class="date">14</div></div>
+        <div class="event"><strong>aqua glitter</strong>new batch · 6 made</div>
+      </div>
+      <div class="drop-day">
+        <div><div class="day-name">thu</div><div class="date">15</div></div>
+        <div class="event">making day</div>
+      </div>
+      <div class="drop-day featured">
+        <span class="badge" style="background: white;"></span>
+        <div><div class="day-name">fri</div><div class="date">16</div></div>
+        <div class="event"><strong>mystery drop</strong>4pm · 8 made</div>
+      </div>
+      <div class="drop-day">
+        <div><div class="day-name">sat</div><div class="date">17</div></div>
+        <div class="event">pickups + ships</div>
+      </div>
+      <div class="drop-day">
+        <div><div class="day-name">sun</div><div class="date">18</div></div>
+        <div class="event">closed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="shop">
+  <div class="section-head">
+    <h2>the <span class="italic">shop</span></h2>
+    <p class="lead">Every squishy is made by hand, so no two look exactly the same. That's kind of the point.</p>
+  </div>
+
+  <div class="product-grid">
+    <div class="product slime">
+      <div class="product-inner">
+        <div class="product-visual">
+          <span class="product-badge">slime</span>
+        </div>
+        <div class="product-tag">slime squishy</div>
+        <h3>the classic slime</h3>
+        <p>Soft, stretchy, slow to come back. The one everyone wants to keep squishing. Comes in sunshine yellow and meadow with stars.</p>
+        <div class="product-bottom">
+          <div class="price">$5<small>/each</small></div>
+          <a href="#ticket" class="order-btn">make a ticket <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product water">
+      <div class="product-inner">
+        <div class="product-visual">
+          <span class="product-badge">water</span>
+        </div>
+        <div class="product-tag">water squishy</div>
+        <h3>the water one</h3>
+        <p>Cool, jiggly, perfect for a hot day. Comes in aqua glitter and ocean blue.</p>
+        <div class="product-bottom">
+          <div class="price">$5<small>/each</small></div>
+          <a href="#ticket" class="order-btn">make a ticket <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product bundle">
+      <div class="product-inner">
+        <div class="product-visual">
+          <span class="product-badge">save $3</span>
+        </div>
+        <div class="product-tag">bundle</div>
+        <h3>three for twelve</h3>
+        <p>Pick any three. Mix slime and water, all one type, whatever. Comes wrapped with a thank-you note.</p>
+        <div class="product-bottom">
+          <div class="price">$12<small>/set</small></div>
+          <a href="#ticket" class="order-btn">make a ticket <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product mystery">
+      <div class="product-inner">
+        <div class="product-visual">
+          <span class="product-badge">friday only</span>
+        </div>
+        <div class="product-tag">limited · friday 4pm</div>
+        <h3>the surprise</h3>
+        <p>One random squishy, my pick. Could be a one-of-one color or a new shape I just figured out. Drops every Friday at 4pm.</p>
+        <div class="product-bottom">
+          <div class="price">$5<small>/blind</small></div>
+          <a href="#ticket" class="order-btn">claim one <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOR PALETTE -->
+<div id="colors" class="palette-section">
+  <div class="palette-inner">
+    <div class="section-head">
+      <h2>the <span class="italic">colors</span><br>i'm making now</h2>
+      <p class="lead">Four core colors in rotation. Custom colors are an extra $1 and one extra day to make.</p>
+    </div>
+    <div class="palette-grid">
+      <div class="swatch aqua">
+        <span class="swatch-type">water</span>
+        <div><div class="swatch-num">no. 01</div></div>
+        <h4>aqua glitter</h4>
+        <div class="swatch-meta">cool + sparkly<span>jellyfish vibe</span></div>
+      </div>
+      <div class="swatch ocean">
+        <span class="swatch-type">water</span>
+        <div><div class="swatch-num">no. 02</div></div>
+        <h4>ocean blue</h4>
+        <div class="swatch-meta">deep + solid<span>classic squish</span></div>
+      </div>
+      <div class="swatch sunshine">
+        <span class="swatch-type">slime</span>
+        <div><div class="swatch-num">no. 03</div></div>
+        <h4>sunshine</h4>
+        <div class="swatch-meta">bright yellow<span>mood booster</span></div>
+      </div>
+      <div class="swatch meadow">
+        <span class="swatch-type">slime</span>
+        <div><div class="swatch-num">no. 04</div></div>
+        <h4>meadow stars</h4>
+        <div class="swatch-meta">green + tiny stars<span>my favorite</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER BUILDER -->
+<section id="ticket" class="order-builder-section">
+  <div class="builder-wrap">
+    <div class="section-head">
+      <h2>build your <span class="accent">ticket</span></h2>
+      <p class="lead">Pick your type, color, and how many. I'll DM you to confirm — usually within an hour.</p>
+    </div>
+
+    <div class="builder-grid">
+      <!-- LEFT: Form -->
+      <form class="builder-form" id="builderForm" onsubmit="return submitTicket(event)">
+        <div class="builder-form-inner">
+
+          <!-- Step 1: Type -->
+          <div class="form-group">
+            <label class="form-label">
+              <span class="step-tag done">01</span>
+              pick your type
+            </label>
+            <div class="type-pills">
+              <button type="button" class="pill active" data-type="water" onclick="selectPill(this, 'type')">
+                <div class="pill-icon"></div>
+                <div>
+                  <strong>water squishy</strong>
+                  <span>cool, jiggly, see-through</span>
+                </div>
+              </button>
+              <button type="button" class="pill" data-type="slime" onclick="selectPill(this, 'type')">
+                <div class="pill-icon"></div>
+                <div>
+                  <strong>slime squishy</strong>
+                  <span>soft, slow, stretchy</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Color -->
+          <div class="form-group">
+            <label class="form-label">
+              <span class="step-tag done">02</span>
+              pick your color
+            </label>
+            <div class="color-picker">
+              <button type="button" class="color-option active" data-color="aqua glitter" data-cat="water" onclick="selectColor(this)">
+                <div class="color-swatch-img" data-color="aqua"></div>
+                <strong>aqua</strong>
+                <small>glitter</small>
+              </button>
+              <button type="button" class="color-option" data-color="ocean blue" data-cat="water" onclick="selectColor(this)">
+                <div class="color-swatch-img" data-color="ocean"></div>
+                <strong>ocean</strong>
+                <small>solid blue</small>
+              </button>
+              <button type="button" class="color-option" data-color="sunshine yellow" data-cat="slime" onclick="selectColor(this)">
+                <div class="color-swatch-img" data-color="sunshine"></div>
+                <strong>sunshine</strong>
+                <small>yellow</small>
+              </button>
+              <button type="button" class="color-option" data-color="meadow stars" data-cat="slime" onclick="selectColor(this)">
+                <div class="color-swatch-img" data-color="meadow"></div>
+                <strong>meadow</strong>
+                <small>green + stars</small>
+              </button>
+              <button type="button" class="color-option" data-color="custom" data-cat="custom" onclick="selectColor(this)">
+                <div class="color-swatch-img" data-color="custom"></div>
+                <strong>custom</strong>
+                <small>+$1</small>
+              </button>
+            </div>
+            <input type="text" id="customColorInput" class="form-input" placeholder="describe your custom color (e.g. 'lavender with silver glitter')" style="margin-top: 12px; display: none;">
+          </div>
+
+          <!-- Step 3: Quantity -->
+          <div class="form-group">
+            <label class="form-label">
+              <span class="step-tag done">03</span>
+              how many
+            </label>
+            <div class="qty-options">
+              <button type="button" class="qty-option active" data-qty="1" data-price="5" onclick="selectQty(this)">
+                <div>
+                  <strong>just one</strong>
+                  <small>single squishy</small>
+                </div>
+                <div class="qty-price">$5</div>
+              </button>
+              <button type="button" class="qty-option" data-qty="3" data-price="12" onclick="selectQty(this)">
+                <div>
+                  <strong>3-pack bundle</strong>
+                  <small>mix and match · save $3</small>
+                </div>
+                <div class="qty-price">$12</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 4: Notes -->
+          <div class="form-group">
+            <label class="form-label">
+              <span class="step-tag">04</span>
+              custom notes <span style="font-size: 12px; color: var(--espresso-soft); font-family: 'DM Sans', sans-serif; font-style: normal; margin-left: auto;">optional</span>
+            </label>
+            <textarea id="notesInput" class="form-textarea" placeholder="e.g. 'extra glittery please' or 'this is a birthday gift for my sister Maya' or 'I want the green one with lots of stars'"></textarea>
+          </div>
+
+          <!-- Step 5: Contact -->
+          <div class="form-group">
+            <label class="form-label">
+              <span class="step-tag">05</span>
+              your contact
+            </label>
+            <div class="contact-fields">
+              <input type="text" id="nameInput" class="form-input" placeholder="your name" required>
+              <select id="contactMethod" class="form-select">
+                <option value="Instagram">Instagram DM</option>
+                <option value="TikTok">TikTok DM</option>
+                <option value="email">email</option>
+                <option value="text">text message</option>
+              </select>
+              <input type="text" id="contactInfo" class="form-input full" placeholder="@yourhandle, email, or phone number" required>
+            </div>
+          </div>
+
+          <!-- Step 6: Pickup/ship -->
+          <div class="form-group">
+            <label class="form-label">
+              <span class="step-tag">06</span>
+              pickup or ship
+            </label>
+            <div class="qty-options">
+              <button type="button" class="qty-option active" data-delivery="pickup" data-fee="0" onclick="selectDelivery(this)">
+                <div>
+                  <strong>local pickup</strong>
+                  <small>free</small>
+                </div>
+                <div class="qty-price">free</div>
+              </button>
+              <button type="button" class="qty-option" data-delivery="ship" data-fee="4" onclick="selectDelivery(this)">
+                <div>
+                  <strong>ship to me</strong>
+                  <small>US only · flat fee</small>
+                </div>
+                <div class="qty-price">+$4</div>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <!-- RIGHT: Live summary -->
+      <div class="order-summary">
+        <div class="summary-card">
+          <span class="eyebrow">your ticket</span>
+          <h3>squidge order</h3>
+          <div class="ticket-num">ticket #<span id="ticketId">SQ-0001</span></div>
+
+          <div class="summary-line">
+            <span>type</span>
+            <strong id="sumType">water squishy</strong>
+          </div>
+          <div class="summary-line">
+            <span>color</span>
+            <strong id="sumColor">aqua glitter</strong>
+          </div>
+          <div class="summary-line">
+            <span>quantity</span>
+            <strong id="sumQty">1 squishy</strong>
+          </div>
+          <div class="summary-line">
+            <span>delivery</span>
+            <strong id="sumDelivery">local pickup</strong>
+          </div>
+          <div class="summary-line">
+            <span>notes</span>
+            <strong id="sumNotes">—</strong>
+          </div>
+
+          <div class="summary-total">
+            <span>total</span>
+            <strong>$<span id="sumTotal">5</span></strong>
+          </div>
+
+          <button type="submit" form="builderForm" class="submit-btn">
+            submit ticket
+            <span class="arrow">→</span>
+          </button>
+          <p class="summary-note">I'll DM you to confirm within an hour</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <span class="eyebrow">about</span>
+      <p>I started <span class="italic">squidge</span> after getting a squishy maker and realizing I could make these way cuter than what's at the store.</p>
+      <p>Every squishy is made one at a time, by hand, in small batches. I pick a few favorite colors and stick with them — so the shop is always changing a little.</p>
+      <p>If you want a custom color or a specific shape, just ask. That's usually the most fun part.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-card-inner">
+        <span class="eyebrow">the maker</span>
+        <div class="big">made by <span class="italic">hand</span><br>not a <span class="italic">factory</span></div>
+        <div class="stats">
+          <div><strong>48h</strong><small>avg turnaround</small></div>
+          <div><strong>4</strong><small>core colors</small></div>
+          <div><strong>$5</strong><small>flat price</small></div>
+          <div><strong>1/1</strong><small>each one unique</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT'S MADE -->
+<section id="how" class="made-section">
+  <div class="section-head">
+    <h2>how it's <span class="italic">made</span></h2>
+    <p class="lead">From the moment you submit a ticket to the moment it's in your hands. Usually 48 hours, sometimes faster.</p>
+  </div>
+  <div class="timeline">
+    <div class="timeline-grid">
+      <div class="step active">
+        <div class="step-num">step one</div>
+        <h4>you submit a ticket</h4>
+        <p>Pick your type, color, and how many on the order form above. Add custom notes if you want something specific.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">step two</div>
+        <h4>I confirm + mix</h4>
+        <p>I'll DM you within an hour to confirm. Then I mix the color and start making your squishy.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">step three</div>
+        <h4>shape + set overnight</h4>
+        <p>I form it on the squishy maker, let it set overnight, and check the squish quality in the morning before approving it.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">step four</div>
+        <h4>pickup or ship</h4>
+        <p>Wrapped in tissue with a hand-written note. Local pickup is free, shipping is $4 flat anywhere in the US.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM GALLERY -->
+<section class="ig-gallery">
+  <div class="section-head">
+    <h2>from <span class="italic">the feed</span></h2>
+    <p class="lead">I post a new squishy or making-of video most days. Tag me when yours arrives.</p>
+  </div>
+  <div class="ig-grid">
+    <div class="ig-tile t-1"><div class="ig-overlay">aqua glitter drop</div></div>
+    <div class="ig-tile t-2"><div class="ig-overlay">sunshine slime · new</div></div>
+    <div class="ig-tile t-3"><div class="ig-overlay">meadow w/ stars</div></div>
+    <div class="ig-tile t-4"><div class="ig-overlay">friday mystery</div></div>
+    <div class="ig-tile t-5"><div class="ig-overlay">ocean blue restock</div></div>
+    <div class="ig-tile t-6"><div class="ig-overlay">ASMR squish video</div></div>
+  </div>
+  <div class="ig-handle-row">
+    <div class="handle">@<span class="italic">wackytownmusic</span></div>
+    <div class="stats">
+      <div><strong>248</strong>posts</div>
+      <div><strong>1.2k</strong>followers</div>
+      <div><strong>92%</strong>5-star</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-head">
+    <h2>what people are <span class="italic">saying</span></h2>
+    <p class="lead">Real DMs from real people, screenshotted with permission.</p>
+  </div>
+  <div class="quote-grid">
+    <div class="quote">
+      <div class="mark">"</div>
+      <p class="quote-text">the aqua glitter one is way prettier than what target sells. like genuinely. i ordered three more for my friends</p>
+      <div class="quote-author">
+        <div class="avatar"></div>
+        <div>
+          <div class="name">maya k.</div>
+          <small>regular customer</small>
+        </div>
+      </div>
+    </div>
+    <div class="quote">
+      <div class="mark">"</div>
+      <p class="quote-text">got my mystery one on friday and it's a color i've never seen anywhere. the packaging note made my whole day</p>
+      <div class="quote-author">
+        <div class="avatar"></div>
+        <div>
+          <div class="name">jordan r.</div>
+          <small>mystery drop fan</small>
+        </div>
+      </div>
+    </div>
+    <div class="quote">
+      <div class="mark">"</div>
+      <p class="quote-text">i asked for the green one with extra stars and it came out exactly how i imagined. ticket system is so easy</p>
+      <div class="quote-author">
+        <div class="avatar"></div>
+        <div>
+          <div class="name">sam p.</div>
+          <small>custom order</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-head">
+    <h2>quick <span class="italic">questions</span></h2>
+    <p class="lead">The stuff people DM me most often.</p>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="q-num">01</div>
+      <div class="q">how do I order?</div>
+      <div class="a">Use the ticket builder above! Pick your type, color, and quantity. I'll DM you within an hour to confirm.</div>
+      <div class="toggle">+</div>
+    </div>
+    <div class="faq-item">
+      <div class="q-num">02</div>
+      <div class="q">can I pick custom colors?</div>
+      <div class="a">For sure. Select "custom" in the ticket builder and describe what you want. Custom colors are +$1 and take one extra day.</div>
+      <div class="toggle">+</div>
+    </div>
+    <div class="faq-item">
+      <div class="q-num">03</div>
+      <div class="q">do water squishies leak?</div>
+      <div class="a">Not if you treat them normal. Don't poke them with sharp things. If one ever does leak on you within a week, I'll replace it for free.</div>
+      <div class="toggle">+</div>
+    </div>
+    <div class="faq-item">
+      <div class="q-num">04</div>
+      <div class="q">how do I pay?</div>
+      <div class="a">Cash at pickup, or Venmo / Zelle / Cash App for shipping. I'll send you the handle in DM once your ticket is confirmed. Always paid before shipping.</div>
+      <div class="toggle">+</div>
+    </div>
+    <div class="faq-item">
+      <div class="q-num">05</div>
+      <div class="q">can I order a bunch for a party?</div>
+      <div class="a">Yes — over 10 is a custom order. Submit a ticket with details in the notes at least a week ahead and I'll do $4 each instead of $5.</div>
+      <div class="toggle">+</div>
+    </div>
+    <div class="faq-item">
+      <div class="q-num">06</div>
+      <div class="q">how long do they last?</div>
+      <div class="a">If you keep them out of the sun and don't squeeze them with sharp nails, slime ones last 6+ months. Water ones last about a year before the texture starts to change.</div>
+      <div class="toggle">+</div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <div>
+    <h3>get the <span class="italic">drop list</span></h3>
+    <p>One email a week. New colors, mystery drop alerts, and the occasional bonus discount code. No spam.</p>
+  </div>
+  <div>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='you\\'re in ✓'; this.querySelector('input').value='';">
+      <input type="email" placeholder="your email" required>
+      <button type="submit">subscribe <span style="font-size: 14px;">→</span></button>
+    </form>
+    <div class="newsletter-meta">unsubscribe anytime · we'll never share your email</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-big">squidge<span class="dot"></span></div>
+      <p style="color: var(--espresso-soft); font-size: 14px; max-width: 36ch; margin-top: 20px;">Soft little things, made by hand. One at a time, in small batches.</p>
+    </div>
+    <div class="footer-col">
+      <h5>shop</h5>
+      <a href="#shop">slime squishies</a>
+      <a href="#shop">water squishies</a>
+      <a href="#shop">bundles</a>
+      <a href="#shop">mystery drop</a>
+      <a href="#colors">colors</a>
+    </div>
+    <div class="footer-col">
+      <h5>info</h5>
+      <a href="#ticket">make a ticket</a>
+      <a href="#how">how it's made</a>
+      <a href="#about">about</a>
+      <a href="#faq">faq</a>
+    </div>
+    <div class="footer-col">
+      <h5>find me</h5>
+      <a href="https://instagram.com/wackytownmusic" target="_blank">@wackytownmusic</a>
+      <a href="https://tiktok.com/@squidge091" target="_blank">@squidge091</a>
+      <a href="mailto:wackytownkids@gmail.com">wackytownkids@gmail.com</a>
+      <a href="sms:+16024489277">text (602) 448-9277</a>
+      <a href="#ticket">order now</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>squidge · made in 2026 · all rights reserved</span>
+    <span>made one at a time, with love</span>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop" aria-label="back to top">↑</button>
+
+<!-- ORDER MODAL -->
+<div class="modal" id="orderModal">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-card">
+    <div class="modal-card-inner">
+      <h3>ticket <span class="italic">submitted</span></h3>
+      <p class="intro">Here's your order summary. Copy it and send to me on Instagram, TikTok, or wherever you picked — I'll confirm within an hour.</p>
+      <div class="order-recap" id="orderRecap"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-copy" id="copyBtn" onclick="copyOrder()">
+          <span id="copyBtnText">copy ticket</span>
+        </button>
+        <a href="https://instagram.com/wackytownmusic" target="_blank" class="btn btn-send" id="sendBtn">
+          open instagram
+          <span style="font-size: 14px;">↗</span>
+        </a>
+      </div>
+      <div class="next-steps">
+        <strong>what happens next</strong>
+        Paste your ticket in a DM. I'll reply within an hour to confirm details and send you a payment link. Then I get to making.
+      </div>
+      <button type="button" class="modal-close" onclick="closeModal()">close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // STATE
+  const state = {
+    type: 'water squishy',
+    typeCategory: 'water',
+    color: 'aqua glitter',
+    colorCategory: 'water',
+    customColor: '',
+    qty: 1,
+    qtyLabel: '1 squishy',
+    price: 5,
+    delivery: 'local pickup',
+    deliveryFee: 0,
+    notes: '',
+    name: '',
+    contactMethod: 'Instagram',
+    contactInfo: ''
+  };
+
+  // Pill selection (type)
+  function selectPill(el, group) {
+    el.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    const type = el.dataset.type;
+    state.typeCategory = type;
+    state.type = type === 'water' ? 'water squishy' : 'slime squishy';
+    updateSummary();
+  }
+
+  // Color selection
+  function selectColor(el) {
+    document.querySelectorAll('.color-option').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    state.color = el.dataset.color;
+    state.colorCategory = el.dataset.cat;
+    const customInput = document.getElementById('customColorInput');
+    if (state.colorCategory === 'custom') {
+      customInput.style.display = 'block';
+      customInput.focus();
+    } else {
+      customInput.style.display = 'none';
+      state.customColor = '';
+    }
+    updateSummary();
+  }
+
+  document.getElementById('customColorInput').addEventListener('input', e => {
+    state.customColor = e.target.value;
+    updateSummary();
+  });
+
+  // Quantity selection
+  function selectQty(el) {
+    el.parentElement.querySelectorAll('.qty-option').forEach(q => q.classList.remove('active'));
+    el.classList.add('active');
+    state.qty = parseInt(el.dataset.qty);
+    state.price = parseInt(el.dataset.price);
+    state.qtyLabel = state.qty === 1 ? '1 squishy' : '3-pack bundle';
+    updateSummary();
+  }
+
+  // Delivery selection
+  function selectDelivery(el) {
+    el.parentElement.querySelectorAll('.qty-option').forEach(q => q.classList.remove('active'));
+    el.classList.add('active');
+    state.delivery = el.dataset.delivery === 'pickup' ? 'local pickup' : 'ship ($4)';
+    state.deliveryFee = parseInt(el.dataset.fee);
+    updateSummary();
+  }
+
+  // Form inputs
+  document.getElementById('notesInput').addEventListener('input', e => {
+    state.notes = e.target.value;
+    updateSummary();
+  });
+  document.getElementById('nameInput').addEventListener('input', e => {
+    state.name = e.target.value;
+  });
+  document.getElementById('contactMethod').addEventListener('change', e => {
+    state.contactMethod = e.target.value;
+  });
+  document.getElementById('contactInfo').addEventListener('input', e => {
+    state.contactInfo = e.target.value;
+  });
+
+  // Live summary
+  function updateSummary() {
+    document.getElementById('sumType').textContent = state.type;
+    let colorText = state.color;
+    if (state.colorCategory === 'custom' && state.customColor) {
+      colorText = 'custom: ' + state.customColor;
+    } else if (state.colorCategory === 'custom') {
+      colorText = 'custom (+$1)';
+    }
+    document.getElementById('sumColor').textContent = colorText;
+    document.getElementById('sumQty').textContent = state.qtyLabel;
+    document.getElementById('sumDelivery').textContent = state.delivery;
+    document.getElementById('sumNotes').textContent = state.notes.trim() || '—';
+
+    let total = state.price + state.deliveryFee;
+    if (state.colorCategory === 'custom') total += 1;
+    document.getElementById('sumTotal').textContent = total;
+  }
+
+  // Submit ticket
+  function submitTicket(e) {
+    e.preventDefault();
+    if (!state.name.trim() || !state.contactInfo.trim()) {
+      alert('please add your name and contact info first');
+      return false;
+    }
+
+    let colorText = state.color;
+    if (state.colorCategory === 'custom') {
+      colorText = state.customColor.trim() ? 'custom — ' + state.customColor : 'custom (will discuss)';
+    }
+    let total = state.price + state.deliveryFee;
+    if (state.colorCategory === 'custom') total += 1;
+    const ticketId = 'SQ-' + Date.now().toString().slice(-4);
+    document.getElementById('ticketId').textContent = ticketId;
+
+    const recap =
+`hi! i'd like to order a squidge —
+
+ticket: #${ticketId}
+type: ${state.type}
+color: ${colorText}
+quantity: ${state.qtyLabel}
+delivery: ${state.delivery}
+${state.notes.trim() ? 'notes: ' + state.notes.trim() + '\n' : ''}
+total: $${total}
+
+— ${state.name}
+reach me at: ${state.contactInfo} (${state.contactMethod})`;
+
+    document.getElementById('orderRecap').textContent = recap;
+
+    // Update send button based on contact method
+    const sendBtn = document.getElementById('sendBtn');
+    if (state.contactMethod === 'Instagram') {
+      sendBtn.href = 'https://instagram.com/wackytownmusic';
+      sendBtn.innerHTML = 'open instagram <span style="font-size: 14px;">↗</span>';
+    } else if (state.contactMethod === 'TikTok') {
+      sendBtn.href = 'https://tiktok.com/@squidge091';
+      sendBtn.innerHTML = 'open tiktok <span style="font-size: 14px;">↗</span>';
+    } else if (state.contactMethod === 'email') {
+      sendBtn.href = 'mailto:wackytownkids@gmail.com?subject=Squidge%20Order%20%23' + ticketId + '&body=' + encodeURIComponent(recap);
+      sendBtn.innerHTML = 'open email <span style="font-size: 14px;">↗</span>';
+    } else {
+      sendBtn.href = 'sms:+16024489277?&body=' + encodeURIComponent(recap);
+      sendBtn.innerHTML = 'open messages <span style="font-size: 14px;">↗</span>';
+    }
+
+    document.getElementById('orderModal').classList.add('open');
+    return false;
+  }
+
+  function closeModal() {
+    document.getElementById('orderModal').classList.remove('open');
+  }
+
+  function copyOrder() {
+    const recap = document.getElementById('orderRecap').textContent;
+    navigator.clipboard.writeText(recap).then(() => {
+      const btn = document.getElementById('copyBtn');
+      const txt = document.getElementById('copyBtnText');
+      btn.classList.add('copied');
+      txt.textContent = 'copied ✓';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        txt.textContent = 'copy ticket';
+      }, 2000);
+    }).catch(() => {
+      alert('couldn\'t copy automatically — please select and copy the order text manually');
+    });
+  }
+
+  // FAQ toggle
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const a = item.querySelector('.a');
+    const t = item.querySelector('.toggle');
+    a.style.display = 'none';
+    item.addEventListener('click', () => {
+      const open = a.style.display === 'block';
+      a.style.display = open ? 'none' : 'block';
+      t.textContent = open ? '+' : '−';
+      item.classList.toggle('open', !open);
+    });
+  });
+
+  // Scroll-to-top button
+  const scrollTopBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) scrollTopBtn.classList.add('visible');
+    else scrollTopBtn.classList.remove('visible');
+  });
+  scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Section fade-in on scroll
+  const els = document.querySelectorAll('section, .drops, .palette-section, .newsletter');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+    io.observe(el);
+  });
+
+  // Close modal with Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>
